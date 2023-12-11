@@ -7,7 +7,25 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div id="app" class="text-blue flex bg-red-500">Initial 3</div>
     <script type="module" src="/src/main.ts"></script>
+    <main
+      id="main"
+      class="relative h-full min-h-screen w-full overflow-hidden transition-opacity duration-100"
+    >
+      <stage-element
+        id="planet-sandbox"
+        data-active-stages="0"
+        class="absolute bottom-0 left-0 right-0 w-full translate-y-[0%] transition-transform duration-500 ease-in data-[stage-inactive]:translate-y-[100%]"
+      >
+        <div class="flex h-[200px] w-full bg-slate-400">test</div>
+      </stage-element>
+      <stage-element
+        id="planet-footer"
+        data-active-stages="0"
+        class="absolute bottom-0 left-0 right-0 w-full translate-y-[0%] transition-transform duration-500 ease-in data-[stage-inactive]:translate-y-[100%]"
+      >
+        <div class="flex h-[200px] w-full bg-slate-400">test</div>
+      </stage-element>
+    </main>
   </body>
 </html>
