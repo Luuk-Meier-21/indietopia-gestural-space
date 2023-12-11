@@ -20,16 +20,16 @@ function main() {
   }, 4000);
 }
 
-function fadeDOMLoading(): HTMLElement | null {
-  const main = document.getElementById("main");
-  if (main === null) {
-    console.error("no main view");
-    return null;
-  }
+// function fadeDOMLoading(): HTMLElement | null {
+//   const main = document.getElementById("main");
+//   if (main === null) {
+//     console.error("no main view");
+//     return null;
+//   }
 
-  main.style.opacity = "1";
-  return main;
-}
+//   main.style.opacity = "1";
+//   return main;
+// }
 
 // listen for dom loaded to start run entry point
 document.addEventListener("DOMContentLoaded", () => main());
