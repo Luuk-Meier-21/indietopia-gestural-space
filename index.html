@@ -4,27 +4,28 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>Indietopia gestural space</title>
   </head>
   <body>
     <script type="module" src="/src/main.ts"></script>
     <main
       id="main"
-      class="relative h-full min-h-screen w-full overflow-hidden transition-opacity duration-100"
+      class="relative h-full min-h-screen w-full overflow-hidden bg-space-blue-900 text-white transition-opacity"
     >
       <stage-element
         id="planet-sandbox"
-        data-active-stages="0"
-        class="absolute bottom-0 left-0 right-0 w-full translate-y-[0%] transition-transform duration-500 ease-in data-[stage-inactive]:translate-y-[100%]"
+        class="flex h-[100vh] duration-1000 ease-in-out data-[stage='0']:h-[calc(100vh-200px)]"
       >
-        <div class="flex h-[200px] w-full bg-slate-400">test</div>
+        <div class="flex h-full w-full flex-1 items-center justify-center">
+          top
+        </div>
       </stage-element>
       <stage-element
         id="planet-footer"
         data-active-stages="0"
-        class="absolute bottom-0 left-0 right-0 w-full translate-y-[0%] transition-transform duration-500 ease-in data-[stage-inactive]:translate-y-[100%]"
+        class="absolute bottom-0 left-0 right-0 w-full translate-y-[0%] transition-transform duration-2000 ease-in data-[stage-inactive]:translate-y-[100%]"
       >
-        <div class="flex h-[200px] w-full bg-slate-400">test</div>
+        <div class="flex h-[200px] w-full ring-px ring-white">test</div>
       </stage-element>
     </main>
   </body>
