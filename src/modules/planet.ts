@@ -109,7 +109,7 @@ export class PlanetBodyElement extends PlanetComponent {
 export class PlanetPuzzleCardElement extends PlanetComponent {
   constructor() {
     super();
-  }
+  } // test
 
   connectedCallback(): void {
     this.config = this.getPlanetConfig();
