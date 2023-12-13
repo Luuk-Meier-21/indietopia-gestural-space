@@ -1,6 +1,7 @@
-import { StageEvent, StageEventListener } from "./stage-event";
+import { Component, StageChangeListener } from "./component";
+import { StageEvent } from "./stage-event";
 
-export class StageElement extends HTMLElement {
+export class StageElement extends Component implements StageChangeListener {
   constructor() {
     super();
   }
@@ -15,7 +16,8 @@ export class StageElement extends HTMLElement {
       .filter((stage) => !isNaN(stage));
   }
 
-  stageChangeCallback(currentStage: number) {
+  onStageChange(event: StageEvent): void {
+    const currentStage = event.detail.currentStage;
     this.setAttribute("data-stage", `${currentStage}`);
 
     if (this.activeStages.includes(currentStage)) {
@@ -35,13 +37,7 @@ export class StageElement extends HTMLElement {
     this.setAttribute("data-stage-inactive", "");
   }
 
-  connectedCallback() {
-    StageEventListener.addListener("stagechange", this, (event: StageEvent) => {
-      this.stageChangeCallback(event.detail.currentStage);
-    });
-
-    // const shadow = this.attachShadow({ mode: "open" });
-  }
+  connectedCallback() {}
 
   // On destroy
   disconnectedCallback() {}

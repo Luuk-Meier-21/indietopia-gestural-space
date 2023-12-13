@@ -1,11 +1,10 @@
-import { StageElement } from "./stage-element";
-
-export type StageEventType = "stagechange";
+export type StageEventType = "stagechange" | "stagestart" | "stageend";
 export type StageEventDetail = {
   currentStage: number;
   [str: string]: any;
 };
 export type StageEvent = {
+  currentTarget: HTMLElement;
   detail: StageEventDetail;
 };
 
@@ -32,7 +31,7 @@ export class StageEventListener {
 
   static addListener(
     type: StageEventType,
-    element: StageElement,
+    element: HTMLElement,
     callback: (e: StageEvent) => void,
   ) {
     element.setAttribute(`data-${EVENT_ATTR_PREFIX}-${type}`, "");

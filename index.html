@@ -8,25 +8,126 @@
   </head>
   <body>
     <script type="module" src="/src/main.ts"></script>
+    <span id="cursor"></span>
     <main
       id="main"
-      class="relative h-full min-h-screen w-full overflow-hidden bg-space-blue-900 text-white transition-opacity"
+      class="relative h-full min-h-screen w-full overflow-hidden bg-space-blue-900 text-white will-change-transform"
     >
       <stage-element
         id="planet-sandbox"
-        class="flex h-[100vh] duration-1000 ease-in-out data-[stage='0']:h-[calc(100vh-200px)]"
+        class="flex h-[100vh] translate-x-[-5dvw] items-center transition-[height] duration-2000 ease-in-out data-[stage='0']:h-[calc(100vh-200px)]"
       >
-        <div class="flex h-full w-full flex-1 items-center justify-center">
-          top
+        <div
+          class="relative flex min-h-[100vh] w-full items-center justify-between"
+        >
+          <div
+            class="aspect-square w-[40dvw] -translate-x-1/2 rounded-full bg-yellow-400"
+          ></div>
+          <planet-orbit-element width="30" data-index="0">
+            <planet-body-element data-index="0"></planet-body-element>
+          </planet-orbit-element>
+
+          <planet-orbit-element width="38" data-index="1">
+            <planet-body-element data-index="1"></planet-body-element>
+          </planet-orbit-element>
+
+          <planet-orbit-element width="50" data-index="2">
+            <planet-body-element data-index="2"></planet-body-element>
+          </planet-orbit-element>
+
+          <planet-orbit-element width="58" data-index="3">
+            <planet-body-element data-index="3"></planet-body-element>
+          </planet-orbit-element>
+
+          <planet-orbit-element width="70" data-index="4">
+            <planet-body-element data-index="4"></planet-body-element>
+          </planet-orbit-element>
+
+          <planet-orbit-element width="85" data-index="5">
+            <planet-body-element data-index="5"></planet-body-element>
+          </planet-orbit-element>
+
+          <planet-orbit-element width="98" data-index="6">
+            <planet-body-element data-index="6"></planet-body-element>
+          </planet-orbit-element>
         </div>
       </stage-element>
       <stage-element
         id="planet-footer"
         data-active-stages="0"
-        class="absolute bottom-0 left-0 right-0 w-full translate-y-[0%] transition-transform duration-2000 ease-in data-[stage-inactive]:translate-y-[100%]"
+        class="absolute bottom-0 left-0 right-0 w-full translate-y-[0%] transition-transform duration-1500 ease-in data-[stage-inactive]:translate-y-[100%]"
       >
-        <div class="flex h-[200px] w-full ring-px ring-white">test</div>
+        <div
+          class="flex h-[200px] w-full bg-gradient-to-t from-space-blue-900 via-space-blue-900/70 via-70% to-space-blue-900/0"
+        >
+          <div class="flex w-full justify-around">
+            <planet-puzzle-card-element data-index="0">
+              <planet-body-element data-index="0"></planet-body-element>
+            </planet-puzzle-card-element>
+
+            <planet-puzzle-card-element data-index="1">
+              <planet-body-element data-index="1"></planet-body-element>
+            </planet-puzzle-card-element>
+
+            <planet-puzzle-card-element data-index="2">
+              <planet-body-element data-index="2"></planet-body-element>
+            </planet-puzzle-card-element>
+
+            <planet-puzzle-card-element data-index="3">
+              <planet-body-element data-index="3"></planet-body-element>
+            </planet-puzzle-card-element>
+
+            <planet-puzzle-card-element data-index="4">
+              <planet-body-element data-index="4"></planet-body-element>
+            </planet-puzzle-card-element>
+
+            <planet-puzzle-card-element data-index="5">
+              <planet-body-element data-index="5"></planet-body-element>
+            </planet-puzzle-card-element>
+
+            <planet-puzzle-card-element data-index="6">
+              <planet-body-element data-index="6"></planet-body-element>
+            </planet-puzzle-card-element>
+          </div>
+        </div>
       </stage-element>
     </main>
+    <!-- ### template ### -->
+
+    <!-- planet orbit -->
+    <template id="planet-orbit-template">
+      <div
+        id="planet-orbit"
+        class="absolute left-0 top-1/2 flex aspect-square origin-center -translate-x-1/2 -translate-y-1/2 items-center justify-end rounded-full ring-px ring-blue-300/20 will-change-transform"
+      >
+        <div
+          id="planet-orbit-detail"
+          class="flex flex-1 justify-end transition-transform duration-2000 ease-in-out will-change-transform"
+        >
+          <div class="translate-x-1/2">
+            <slot></slot>
+          </div>
+        </div>
+      </div>
+    </template>
+    <!-- planet body -->
+    <template id="planet-body-template">
+      <div id="planet-body" class="origin-center">
+        <div
+          id="planet-surface"
+          class="relative z-20 aspect-square w-[1dvw] origin-center rounded-full bg-red-400"
+        ></div>
+      </div>
+    </template>
+    <!-- planet puzzel card -->
+    <template id="planet-puzzle-card-template">
+      <article
+        id="planet-puzzle-card"
+        class="flex flex-col items-center gap-y-10 pt-10"
+      >
+        <slot></slot>
+        <h2 id="planet-name">No planet name set</h2>
+      </article>
+    </template>
   </body>
 </html>

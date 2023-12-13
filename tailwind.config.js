@@ -1,11 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-console.log({
-  test: objectForLength(20, (i) => ({
-    [i * 100]: `${i * 100}ms`,
-  })),
-});
-
 function objectForLength(n, func = () => {}) {
   return {
     ...Array.from(Array(n)).reduce((a, _, i) => ({ ...a, ...func(i + 1) })),
@@ -24,7 +18,7 @@ export default {
       },
       colors: {
         "space-blue": {
-          900: "#0C0F10",
+          900: "#0B1720",
         },
       },
       transitionDuration: {

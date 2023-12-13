@@ -5,11 +5,11 @@ import { StageEventDispatcher } from "./stage-event";
 export class Stage {
   private static instance: Stage;
   private stageLength;
-  private currStageIndex;
+  currentStage;
 
   private constructor() {
     this.stageLength = STAGE_CONFIG.count;
-    this.currStageIndex = STAGE_CONFIG.startIndex;
+    this.currentStage = STAGE_CONFIG.startIndex;
   }
 
   public static get getInstance(): Stage {
@@ -25,13 +25,19 @@ export class Stage {
   }
 
   propagateStage() {
+    if (this.currentStage === 0) {
+      StageEventDispatcher.dispatchToElements("stagestart", {
+        currentStage: this.currentStage,
+      });
+    }
+    if (this.currentStage >= this.stageLength) {
+      StageEventDispatcher.dispatchToElements("stageend", {
+        currentStage: this.currentStage,
+      });
+    }
     StageEventDispatcher.dispatchToElements("stagechange", {
       currentStage: this.currentStage,
     });
-  }
-
-  get currentStage(): number {
-    return this.currStageIndex;
   }
 
   updateStage(index: number): number {
@@ -39,16 +45,16 @@ export class Stage {
       return -1;
     }
 
-    this.currStageIndex = index;
+    this.currentStage = index;
     this.propagateStage();
-    return this.currStageIndex;
+    return this.currentStage;
   }
 
   next(): number {
-    return this.updateStage(this.currStageIndex + 1);
+    return this.updateStage(this.currentStage + 1);
   }
 
   prev(): number {
-    return this.updateStage(this.currStageIndex - 1);
+    return this.updateStage(this.currentStage - 1);
   }
 }
