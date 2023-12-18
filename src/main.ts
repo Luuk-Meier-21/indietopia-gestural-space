@@ -18,7 +18,7 @@ window.customElements.define(
   PlanetPuzzleCardElement,
 );
 
-function onDOMLoaded(_: Event) {
+function onDOMLoaded() {
   Stage.getInstance.setupInitialStage();
 
   // document.addEventListener("pointermove", (e) => {
@@ -26,12 +26,11 @@ function onDOMLoaded(_: Event) {
   // });
 }
 
-function viewportHandler(event) {
-  const view: VisualViewport = event.target;
+function viewportHandler() {
+  // const view: VisualViewport = event.target;
   // Range: 1 <-> 3
   // const zoom = view.scale;
   // document.body.style.zoom = map(zoom, 1, 3, 1, 0.3333);
-
   // document.body.style.width = `${parseInt(document.body.style.width) * zoom}`;
 }
 
