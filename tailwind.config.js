@@ -18,7 +18,7 @@ export default {
       },
       colors: {
         "space-blue": {
-          900: "#0B1720",
+          900: "#0A1E2D",
         },
       },
       transitionDuration: {

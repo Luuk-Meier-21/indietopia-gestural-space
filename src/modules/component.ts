@@ -20,12 +20,12 @@ export abstract class Component extends HTMLElement {
     this.addListeners(this);
   }
 
-  getTemplate(componentId: string): Element {
-    const template = document.getElementById(`${componentId}-template`);
-    //@ts-ignore
+  cloneTemplate(templateName: string): HTMLElement {
+    const template = document.getElementById(`${templateName}-template`);
+    // @ts-expect-error content is undefined
     const clone: HTMLElement = template.content.cloneNode(true);
 
-    return clone.querySelector(`#${componentId}`);
+    return clone.querySelector(`#${templateName}`);
   }
 
   getSlot(component: Element, slotName: string = null): Element | null {
@@ -34,10 +34,6 @@ export abstract class Component extends HTMLElement {
     }
 
     return component.querySelector("slot");
-  }
-
-  getChild(): Element | null {
-    return this.children[0];
   }
 
   addListeners(element: Component) {

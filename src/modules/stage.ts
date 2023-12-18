@@ -40,12 +40,16 @@ export class Stage {
     });
   }
 
-  updateStage(index: number): number {
-    if (index >= this.stageLength) {
-      return -1;
+  updateStage(newStage: number): number {
+    if (newStage < 0) {
+      return 0;
     }
 
-    this.currentStage = index;
+    if (newStage >= this.stageLength) {
+      return this.stageLength - 1;
+    }
+
+    this.currentStage = newStage;
     this.propagateStage();
     return this.currentStage;
   }

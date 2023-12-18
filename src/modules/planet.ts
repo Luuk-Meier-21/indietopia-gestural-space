@@ -1,11 +1,13 @@
-import { PLANETS_CONFIG } from "../config";
+import { PLANETS_CONFIG, PUZZLE_PLANET_MULTIPLIER } from "../config";
 import { Component, StageChangeListener } from "./component";
-import { StageEvent, StageEventListener } from "./stage-event";
+import { enumerate } from "./generators";
+import { StageEvent } from "./stage-event";
 
 export interface Planet {
   name: string;
   description: string;
   scale: number;
+  image: string;
 
   // Out of bounds but a def wish
   solarOffsetAngle?: number;
@@ -41,6 +43,8 @@ export class PlanetOrbitElement
   extends PlanetComponent
   implements StageChangeListener
 {
+  static componentName = "planet-orbit";
+
   hasSolarRotation: boolean = false;
   hasInitRender = false;
 
@@ -62,7 +66,7 @@ export class PlanetOrbitElement
 
   renderOrbit() {
     const orbitWidth: number = parseInt(this.getAttribute("width"));
-    this.style.width = `${orbitWidth * 2}dvw`;
+    this.style.width = `${orbitWidth * 2}%`;
 
     const orbitDetails = this.querySelector(
       "#planet-orbit-detail",
@@ -77,11 +81,10 @@ export class PlanetOrbitElement
 
   connectedCallback() {
     this.config = this.getPlanetConfig();
-    const component = this.getTemplate("planet-orbit") as HTMLElement;
+    const component = this.cloneTemplate(PlanetOrbitElement.componentName);
     const slot = this.getSlot(component);
-    const slotContent = this.getChild();
 
-    slot.replaceWith(slotContent);
+    slot.replaceChildren(...this.children);
 
     this.className = component.className;
 
@@ -90,38 +93,78 @@ export class PlanetOrbitElement
 }
 
 export class PlanetBodyElement extends PlanetComponent {
+  static componentName = "planet-body";
+
   constructor() {
     super();
   }
 
+  onStageChange(event: StageEvent): void {
+    const stage = event.detail.currentStage;
+
+    const isAtStart = stage === 0;
+    const scale = isAtStart
+      ? this.config.scale * PUZZLE_PLANET_MULTIPLIER
+      : this.config.scale;
+
+    const surface = this.querySelector("#planet-surface") as HTMLElement;
+    surface.style.transform = `scale(${scale})`;
+  }
+
   connectedCallback(): void {
     this.config = this.getPlanetConfig();
-    const component = this.getTemplate("planet-body") as HTMLElement;
+    const component = this.cloneTemplate(PlanetBodyElement.componentName);
 
     this.className = component.className;
 
-    component.children[0].style.transform = `scale(${this.config.scale})`;
+    const surface = component.querySelector("#planet-surface") as HTMLElement;
+    surface.style.transform = `scale(${this.config.scale * 3})`;
+
+    const image = surface.querySelector("img") as HTMLElement;
+    console.log(image);
+    image.setAttribute("src", this.config.image);
 
     this.replaceChildren(component.children[0]);
   }
 }
 
 export class PlanetPuzzleCardElement extends PlanetComponent {
+  static componentName = "planet-puzzle-card";
+
   constructor() {
     super();
   } // test
 
   connectedCallback(): void {
     this.config = this.getPlanetConfig();
-    const component = this.getTemplate("planet-puzzle-card");
+    const component = this.cloneTemplate(PlanetPuzzleCardElement.componentName);
     const slot = this.getSlot(component);
-    const slotContent = this.getChild();
 
-    slot.replaceWith(slotContent);
+    slot.replaceChildren(...this.children);
 
-    const text = component.querySelector("#planet-name");
+    const textElement: Element | null = component.querySelector("#planet-name");
 
-    text.textContent = this.config.name;
+    if (textElement !== null) {
+      textElement.textContent = this.config.name;
+    }
+
+    this.replaceChildren(component);
+  }
+}
+
+export class PlanetInfoCardElement extends PlanetComponent {
+  static componentName = "planet-info-card";
+
+  constructor() {
+    super();
+  }
+
+  connectedCallback(): void {
+    this.config = this.getPlanetConfig();
+    const component = this.cloneTemplate(PlanetInfoCardElement.componentName);
+    const slot = this.getSlot(component);
+
+    slot.replaceChildren(...this.children);
 
     this.replaceChildren(component);
   }
