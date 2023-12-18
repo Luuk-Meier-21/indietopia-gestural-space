@@ -1,6 +1,5 @@
 import { PLANETS_CONFIG, PUZZLE_PLANET_MULTIPLIER } from "../config";
 import { Component, StageChangeListener } from "./component";
-import { enumerate } from "./generators";
 import { StageEvent } from "./stage-event";
 
 export interface Planet {

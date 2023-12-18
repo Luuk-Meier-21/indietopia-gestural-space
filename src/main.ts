@@ -29,13 +29,13 @@ function onDOMLoaded(_: Event) {
 function viewportHandler(event) {
   const view: VisualViewport = event.target;
   // Range: 1 <-> 3
-  const zoom = view.scale;
+  // const zoom = view.scale;
   // document.body.style.zoom = map(zoom, 1, 3, 1, 0.3333);
 
   // document.body.style.width = `${parseInt(document.body.style.width) * zoom}`;
 }
 
-StageEventListener.addListener("stagestart", document.body, (event) => {
+StageEventListener.addListener("stagestart", document.body, () => {
   scrollTo({
     left: 0,
     behavior: "smooth",
