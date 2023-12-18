@@ -6,3 +6,50 @@ stage-element {
 @tailwind components;
 @tailwind utilities;
 
+
+
+h2 {
+    text-align: center; 
+    border: 1px black;   
+    border-style: solid;
+    z-index: -8;
+}
+
+
+#selectbarbg {
+    visibility: hidden;
+    width: 5%;
+    height: 10px;
+    background-color: lightgray;
+}
+
+#loadingselectbar {
+    visibility: hidden;
+    width: 1%;
+    height: 10px;
+    background-color: black;
+}
+
+canvas { 
+    display: block;
+    position: absolute;
+    z-index: -10;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+#dragged {
+    user-select: none;
+    visibility: hidden;
+    position: absolute;
+    z-index: -5;
+}
+
+#dragtarget {
+    z-index: 5;
+}

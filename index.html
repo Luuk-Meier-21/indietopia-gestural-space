@@ -8,6 +8,23 @@
   </head>
   <body>
     <script type="module" src="/src/main.ts"></script>
+
+    <canvas id="selectcanvas" width="200" height="200">canvas do be broken</canvas>
+        
+    <br>
+
+    <div class="selectable" style="margin-top:100px;"><h2>SELECT</h2></div>
+    <div id="dragged"><h2>DRAG</h2></div>
+
+    <div class="dragtarget" style="margin-top:100px;"><h2>DROP ZONE 
+      <div class="selectable selectdrag"><h2>DRAG</h2></div>
+    </h2></div>
+
+    <div class="dragtarget" style="margin-top:100px;"><h2>DROP ZONE 
+      <div class="selectable selectdrag" style="visibility: hidden;"><h2>DRAG</h2></div>
+    </h2></div>
+
+
     <main
       id="main"
       class="relative h-full min-h-screen w-full overflow-hidden bg-space-blue-900 text-white transition-opacity"
