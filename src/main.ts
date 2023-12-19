@@ -11,8 +11,27 @@ import "./style.css";
 
 window.customElements.define("stage-element", StageElement);
 
+let loader: HoldLoader;
+
 function onDOMLoaded(_: Event) {
   Stage.getInstance.setupInitialStage();
+
+  let canvas = document.getElementById(
+    "selectcanvas",
+  ) as HTMLCanvasElement | null;
+  if (canvas === null) {
+    canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+  }
+
+  canvas.setAttribute("width", screen.width.toString());
+  canvas.setAttribute("height", screen.height.toString());
+
+  let ctx: CanvasRenderingContext2D = canvas.getContext(
+    "2d",
+  ) as CanvasRenderingContext2D;
+
+  loader = new HoldLoader(ctx, canvas.width, canvas.height);
 }
 
 document.addEventListener("DOMContentLoaded", onDOMLoaded);
@@ -27,23 +46,6 @@ let mouseY: number;
 let isDragged: boolean = false;
 let draggedElement: any = document.getElementById("dragged");
 let touchEnter: boolean = false;
-
-let canvas = document.getElementById(
-  "selectcanvas",
-) as HTMLCanvasElement | null;
-if (canvas === null) {
-  canvas = document.createElement("canvas");
-  document.body.appendChild(canvas);
-}
-
-canvas.setAttribute("width", screen.width.toString());
-canvas.setAttribute("height", screen.height.toString());
-
-let ctx: CanvasRenderingContext2D = canvas.getContext(
-  "2d",
-) as CanvasRenderingContext2D;
-
-const loader = new HoldLoader(ctx, canvas.width, canvas.height);
 
 // Event listener and processing of touch inputs
 window.addEventListener("touchmove", (event) => {
@@ -61,15 +63,19 @@ window.addEventListener("mousemove", (event) => {
 });
 
 function onPointerMove() {
-  let touchedElement: any = document.elementFromPoint(mouseX, mouseY);
+  let touchedElement = document.elementFromPoint(
+    mouseX,
+    mouseY,
+  ) as HTMLElement | null;
 
   // User elementsFromPoint
 
   // TODO: Look for parent node untill selector is found:
   if (touchedElement != null) {
     if (
-      touchedElement.parentNode.classList.contains("selectable") ||
-      (touchedElement.parentNode.classList.contains("dragtarget") && isDragged)
+      touchedElement.parentElement?.classList?.contains("selectable") ||
+      (touchedElement.parentElement?.classList?.contains("dragtarget") &&
+        isDragged)
     ) {
       onPointerEnter(touchedElement.parentNode);
     } else {
@@ -113,7 +119,7 @@ function onPointerLeave() {
   clearInterval(id);
   clearTimeout(selectCheck);
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  loader.clear();
 }
 
 function delayedClick(selectedElement: any) {
