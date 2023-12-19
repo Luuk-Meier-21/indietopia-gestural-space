@@ -22,7 +22,7 @@ export default {
         },
       },
       transitionDuration: {
-        ...objectForLength(20, (i) => ({
+        ...objectForLength(30, (i) => ({
           [i * 100]: `${i * 100}ms`,
         })),
       },

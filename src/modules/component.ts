@@ -30,10 +30,10 @@ export abstract class Component extends HTMLElement {
 
   getSlot(component: Element, slotName: string = null): Element | null {
     if (slotName) {
-      return component.querySelector(`slot[name='${slotName}']`);
+      return component?.querySelector(`slot[name='${slotName}']`) || null;
     }
 
-    return component.querySelector("slot");
+    return component?.querySelector("slot") || null;
   }
 
   addListeners(element: Component) {

@@ -1,6 +1,7 @@
 import { debugKeydown } from "./modules/debug";
 import {
   PlanetBodyElement,
+  PlanetInfoCardElement,
   PlanetOrbitElement,
   PlanetPuzzleCardElement,
 } from "./modules/planet";
@@ -17,6 +18,7 @@ window.customElements.define(
   "planet-puzzle-card-element",
   PlanetPuzzleCardElement,
 );
+window.customElements.define("planet-info-card-element", PlanetInfoCardElement);
 
 function onDOMLoaded() {
   Stage.getInstance.setupInitialStage();

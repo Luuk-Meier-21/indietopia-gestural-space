@@ -11,53 +11,60 @@
     <span id="cursor"></span>
     <main
       id="main"
-      class="relative h-full min-h-screen text-white antialiased will-change-auto"
+      class="group relative h-full min-h-screen text-white antialiased will-change-auto"
     >
       <stage-element
         id="planet-sandbox"
-        class="group group flex h-[100vh] w-[100vw] items-center overflow-hidden transition-[width] duration-2000 will-change-auto"
+        data-active-stages="1"
+        class="group flex h-[100vh] w-[100vw] items-center overflow-hidden transition-[width] duration-2000 will-change-auto"
       >
         <div
-          class="relative flex w-full -translate-x-[5dvw] items-center justify-between"
+          class="relative flex w-full -translate-x-[25vw] items-center justify-between"
         >
-          <div class="aspect-square w-[40dvw] -translate-x-1/2 rounded-full">
+          <!-- Sun -->
+          <div
+            class="aspect-square w-[90vw] -translate-x-1/2 scale-[1.2] rounded-full"
+          >
             <img
-              class="w-full object-cover transition-transform duration-2000 ease-in-out group-data-[stage='1']:rotate-6"
+              class="duration-3000 w-full object-cover transition-transform group-data-[stage-active]:rotate-12"
               src="/planets/sun.svg"
               alt=""
             />
           </div>
+          <!-- Planets -->
           <planet-orbit-element width="30" data-index="0">
             <planet-body-element data-index="0"></planet-body-element>
-            <div
-              class="absolute left-[10px] top-[10px] origin-top-left scale-[.2] whitespace-nowrap bg-gray-700 text-sm"
-            >
-              Test card
-            </div>
+            <planet-info-card-element data-index="0"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="38" data-index="1">
             <planet-body-element data-index="1"></planet-body-element>
+            <planet-info-card-element data-index="1"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="50" data-index="2">
             <planet-body-element data-index="2"></planet-body-element>
+            <planet-info-card-element data-index="2"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="58" data-index="3">
             <planet-body-element data-index="3"></planet-body-element>
+            <planet-info-card-element data-index="3"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="70" data-index="4">
             <planet-body-element data-index="4"></planet-body-element>
+            <planet-info-card-element data-index="4"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="85" data-index="5">
             <planet-body-element data-index="5"></planet-body-element>
+            <planet-info-card-element data-index="5"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="98" data-index="6">
             <planet-body-element data-index="6"></planet-body-element>
+            <planet-info-card-element data-index="6"></planet-info-card-element>
           </planet-orbit-element>
         </div>
       </stage-element>
@@ -70,7 +77,7 @@
           class="flex w-full bg-gradient-to-t from-space-blue-900 via-space-blue-900/70 via-70% to-space-blue-900/0"
         >
           <div class="flex w-full justify-around pb-10 text-white">
-            <planet-puzzle-card-element data-index="1">
+            <planet-puzzle-card-element data-index="0">
               <planet-body-element data-index="0"></planet-body-element>
             </planet-puzzle-card-element>
 
@@ -124,9 +131,13 @@
       <div id="planet-body" class="origin-center">
         <div
           id="planet-surface"
-          class="relative z-20 aspect-square w-[1dvw] origin-center rounded-full transition-transform duration-2000 ease-in-out will-change-transform"
+          class="relative z-20 flex aspect-square h-[1vw] origin-center items-center rounded-full transition-transform duration-2000 ease-in-out will-change-transform"
         >
-          <img class="w-full object-cover" src="/planets/earth.svg" alt="" />
+          <img
+            class="h-full object-fill object-center"
+            src="/planets/earth.svg"
+            alt=""
+          />
         </div>
       </div>
     </template>
@@ -142,12 +153,16 @@
     </template>
 
     <!-- planet info card -->
-    <template id="planet-puzzle-card-template">
+    <template id="planet-info-card-template">
       <div
-        class="absolute left-[10px] top-[10px] origin-top-left scale-[.2] whitespace-nowrap bg-gray-700 text-sm"
+        id="planet-info-card"
+        class="absolute left-0 top-0 z-30 flex w-[180px] origin-top-left flex-col bg-gray-700 p-2 text-sm transition-transform duration-2000 ease-in-out will-change-transform"
       >
-        <h2 id="planet"></h2>
-        <slot name=""></slot>
+        <h2 id="planet-info-heading" class="mb-1 font-bold">tess</h2>
+        <p id="planet-info-text" class="flex">
+          is simply dummy text of the printing and typesetting industry. Lorem
+          Ipsum has been.
+        </p>
       </div>
     </template>
   </body>
