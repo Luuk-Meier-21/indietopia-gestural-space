@@ -1,4 +1,5 @@
 import { debugKeydown } from "./modules/debug";
+import { HoldLoader } from "./modules/loader";
 import { Stage } from "./modules/stage";
 import { StageElement } from "./modules/stage-element";
 
@@ -17,7 +18,6 @@ function onDOMLoaded(_: Event) {
 document.addEventListener("DOMContentLoaded", onDOMLoaded);
 document.addEventListener("keydown", debugKeydown);
 
-let i: number = 0;
 let id: number;
 let dragStart: number;
 let selectCheck: number;
@@ -39,7 +39,11 @@ if (canvas === null) {
 canvas.setAttribute("width", screen.width.toString());
 canvas.setAttribute("height", screen.height.toString());
 
-let ctx: any = canvas.getContext("2d");
+let ctx: CanvasRenderingContext2D = canvas.getContext(
+  "2d",
+) as CanvasRenderingContext2D;
+
+const loader = new HoldLoader(ctx, canvas.width, canvas.height);
 
 // Event listener and processing of touch inputs
 window.addEventListener("touchmove", (event) => {
@@ -59,6 +63,8 @@ window.addEventListener("mousemove", (event) => {
 function onPointerMove() {
   let touchedElement: any = document.elementFromPoint(mouseX, mouseY);
 
+  // User elementsFromPoint
+
   // TODO: Look for parent node untill selector is found:
   if (touchedElement != null) {
     if (
@@ -73,32 +79,13 @@ function onPointerMove() {
   }
 }
 
-window.addEventListener("mousemove", (event) => {
-  mouseX = event.clientX;
-  mouseY = event.clientY;
-});
-
 function progressbar() {
-  if (progress >= 2) {
+  if (progress >= 1) {
     clearInterval(id);
-    i = 0;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    loader.clear();
   } else {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    //background for bar
-    ctx.beginPath();
-    ctx.arc(mouseX - 10, mouseY - 10, 50, 0, 2 * Math.PI);
-    ctx.strokeStyle = "lightgray";
-    ctx.lineWidth = 10;
-    ctx.stroke();
-
-    progress += 0.02;
-    ctx.beginPath();
-    ctx.arc(mouseX - 10, mouseY - 10, 50, 0, progress * Math.PI);
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 10;
-    ctx.stroke();
+    progress += 0.01;
+    loader.draw(progress, mouseX, mouseY);
   }
 }
 
@@ -107,14 +94,11 @@ function onPointerEnter(pointerSelected: any) {
     touchEnter = true;
     console.log(touchEnter);
     if (
-      (i == 0 &&
-        !isDragged &&
-        !pointerSelected.classList.contains("dragtarget")) ||
+      (!isDragged && !pointerSelected.classList.contains("dragtarget")) ||
       (isDragged && pointerSelected.classList.contains("dragtarget"))
     ) {
       selectCheck = setTimeout(delayedClick, 2000, pointerSelected);
       console.log("started select");
-      i = 1;
 
       // loading bar
       id = setInterval(progressbar, 20);
@@ -123,8 +107,8 @@ function onPointerEnter(pointerSelected: any) {
 }
 
 function onPointerLeave() {
-  i = 0;
   progress = 0;
+  touchEnter = false;
 
   clearInterval(id);
   clearTimeout(selectCheck);
@@ -133,11 +117,11 @@ function onPointerLeave() {
 }
 
 function delayedClick(selectedElement: any) {
-  if (i == 1) {
-    // Thing has been selected, so change things
-    // document.getElementById("text").innerHTML = "a";
-    console.log("selected");
-  }
+  // if (i == 1) {
+  //   // Thing has been selected, so change things
+  //   // document.getElementById("text").innerHTML = "a";
+  //   console.log("selected");
+  // }
   // start draggin object
   if (selectedElement.classList.contains("selectdrag")) {
     console.log("drag");
