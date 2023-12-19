@@ -17,60 +17,71 @@ export const SOLAR_OFFSET = "100dvw";
 export const PLANETS_CONFIG: Planet[] = [
   {
     name: "Mercury",
-    description: "",
-    scale: 1,
-    // puzzleScaleMultiplier: 5,
+    description:
+      "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
+    scale: 0.4,
+    puzzleScaleMultiplier: 20,
     solarOffsetAngle: -20,
     orbitalOffset: -10,
     image: "/planets/mercury.svg",
   },
   {
     name: "Venus",
-    description: "",
-    scale: 1,
+    description:
+      "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
+    scale: 0.9,
     solarOffsetAngle: 12,
     orbitalOffset: -10,
     image: "/planets/venus.svg",
   },
   {
     name: "Earth",
-    description: "",
+    description:
+      "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
     scale: 1,
-    solarOffsetAngle: 20,
+    solarOffsetAngle: 14,
     image: "/planets/earth.svg",
   },
   {
     name: "Mars",
-    description: "",
-    scale: 1,
+    description:
+      "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
+    scale: 0.55,
     solarOffsetAngle: -2,
     image: "/planets/mars.svg",
   },
   {
     name: "Jupiter",
-    description: "",
-    scale: 1,
+    description:
+      "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
+    scale: 4,
+    puzzleScaleMultiplier: 2,
     solarOffsetAngle: -8,
     image: "/planets/jupiter.svg",
   },
   {
     name: "Saturn",
-    description: "",
-    scale: 1,
-    solarOffsetAngle: 12,
+    description:
+      "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
+    scale: 5.5,
+    puzzleScaleMultiplier: 2,
+    solarOffsetAngle: 10,
     image: "/planets/saturn.svg",
   },
   {
     name: "Uranus",
-    description: "",
-    scale: 1,
+    description:
+      "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
+    scale: 5,
+    puzzleScaleMultiplier: 2,
     solarOffsetAngle: 5,
     image: "/planets/uranus.svg",
   },
   {
     name: "Neptune",
-    description: "",
-    scale: 1,
+    description:
+      "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
+    scale: 2.7,
     solarOffsetAngle: 30,
     image: "/planets/neptune.svg",
   },

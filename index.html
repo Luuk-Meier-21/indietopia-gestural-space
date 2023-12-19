@@ -13,6 +13,7 @@
       id="main"
       class="group relative h-full min-h-screen text-white antialiased will-change-auto"
     >
+      <zoom-element></zoom-element>
       <stage-element
         id="planet-sandbox"
         data-active-stages="1"
@@ -66,6 +67,11 @@
             <planet-body-element data-index="6"></planet-body-element>
             <planet-info-card-element data-index="6"></planet-info-card-element>
           </planet-orbit-element>
+
+          <!-- <planet-orbit-element width="98" data-index="7">
+            <planet-body-element data-index="7"></planet-body-element>
+            <planet-info-card-element data-index="7"></planet-info-card-element>
+          </planet-orbit-element> -->
         </div>
       </stage-element>
       <stage-element
@@ -76,7 +82,7 @@
         <div
           class="flex w-full bg-gradient-to-t from-space-blue-900 via-space-blue-900/70 via-70% to-space-blue-900/0"
         >
-          <div class="flex w-full justify-around pb-10 text-white">
+          <div class="flex w-full justify-around pb-5 text-white">
             <planet-puzzle-card-element data-index="0">
               <planet-body-element data-index="0"></planet-body-element>
             </planet-puzzle-card-element>
@@ -104,6 +110,10 @@
             <planet-puzzle-card-element data-index="6">
               <planet-body-element data-index="6"></planet-body-element>
             </planet-puzzle-card-element>
+
+            <planet-puzzle-card-element data-index="7">
+              <planet-body-element data-index="7"></planet-body-element>
+            </planet-puzzle-card-element>
           </div>
         </div>
       </stage-element>
@@ -121,7 +131,7 @@
           class="flex flex-1 justify-end transition-transform duration-2000 ease-in-out will-change-transform"
         >
           <div class="translate-x-1/2">
-            <slot class="relative"></slot>
+            <slot class="relative h-full w-full"></slot>
           </div>
         </div>
       </div>
@@ -145,7 +155,7 @@
     <template id="planet-puzzle-card-template">
       <article
         id="planet-puzzle-card"
-        class="flex flex-col items-center gap-y-10 pt-10"
+        class="flex flex-col items-center gap-y-[70px] pt-10"
       >
         <slot class="relative"></slot>
         <h2 id="planet-name">No planet name set</h2>
@@ -156,14 +166,35 @@
     <template id="planet-info-card-template">
       <div
         id="planet-info-card"
-        class="absolute left-0 top-0 z-30 flex w-[180px] origin-top-left flex-col bg-gray-700 p-2 text-sm transition-transform duration-2000 ease-in-out will-change-transform"
+        class="pointer-events-none absolute left-[50%] top-[50%] z-30 flex w-[200px] origin-top-left flex-col transition-[transform_opacity] duration-2000 ease-in-out will-change-[transform_opacity]"
       >
-        <h2 id="planet-info-heading" class="mb-1 font-bold">tess</h2>
-        <p id="planet-info-text" class="flex">
-          is simply dummy text of the printing and typesetting industry. Lorem
-          Ipsum has been.
-        </p>
+        <div
+          id="planet-info-inner"
+          class="bg-space-blue-1000/40 pointer-events-auto rounded-lg p-5 text-sm backdrop-blur-md transition-opacity duration-100"
+        >
+          <h2 id="planet-info-heading" class="mb-2 font-bold">tess</h2>
+          <p id="planet-info-text" class="flex">
+            is simply dummy text of the printing and typesetting industry. Lorem
+            Ipsum has been.
+          </p>
+        </div>
       </div>
+    </template>
+
+    <template id="zoom-template">
+      <section
+        id="zoom"
+        class="fixed left-0 top-0 z-50 origin-top-left transition-[transform_opacity] duration-[100ms] will-change-transform"
+      >
+        <div class="flex justify-end p-2">
+          <div
+            id="zoom-text"
+            class="bg-space-blue-1000/40 rounded-lg p-2 font-bold backdrop-blur-md"
+          >
+            100%
+          </div>
+        </div>
+      </section>
     </template>
   </body>
 </html>

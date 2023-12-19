@@ -8,6 +8,7 @@ import {
 import { Stage } from "./modules/stage";
 import { StageElement } from "./modules/stage-element";
 import { StageEventListener } from "./modules/stage-event";
+import { ZoomComponent } from "./modules/zoom";
 
 import "./style.css";
 
@@ -19,6 +20,7 @@ window.customElements.define(
   PlanetPuzzleCardElement,
 );
 window.customElements.define("planet-info-card-element", PlanetInfoCardElement);
+window.customElements.define("zoom-element", ZoomComponent);
 
 function onDOMLoaded() {
   Stage.getInstance.setupInitialStage();
@@ -28,13 +30,18 @@ function onDOMLoaded() {
   // });
 }
 
-function viewportHandler() {
-  // const view: VisualViewport = event.target;
-  // Range: 1 <-> 3
-  // const zoom = view.scale;
-  // document.body.style.zoom = map(zoom, 1, 3, 1, 0.3333);
-  // document.body.style.width = `${parseInt(document.body.style.width) * zoom}`;
-}
+// function viewportHandler(event) {
+//   // zoom range: 1 <-> 3
+//   const view: VisualViewport = event.target;
+
+//   const zoomElement = document.getElementById("zoom-indicator");
+//   console.log(view);
+
+//   zoomElement.textContent = `${Math.floor(view.scale * 100)}%`;
+
+//   // document.body.style.zoom = map(zoom, 1, 3, 1, 0.3333);
+//   // document.body.style.width = `${parseInt(document.body.style.width) * zoom}`;
+// }
 
 StageEventListener.addListener("stagestart", document.body, () => {
   scrollTo({
@@ -44,7 +51,7 @@ StageEventListener.addListener("stagestart", document.body, () => {
 });
 
 document.addEventListener("DOMContentLoaded", onDOMLoaded);
-window.visualViewport.addEventListener("resize", viewportHandler);
+// window.visualViewport.addEventListener("resize", viewportHandler);
 
 // DEBUG
 document.addEventListener("keydown", debugKeydown);
