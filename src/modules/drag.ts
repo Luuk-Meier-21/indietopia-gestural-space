@@ -1,15 +1,3 @@
-// export class Singleton<T> {
-//   private innerInstance: T;
-
-//   get instance() {
-//     return this.innerInstance;
-//   }
-
-//   constructor(constructorFunc: new () => T) {
-//     this.innerInstance = new constructorFunc();
-//   }
-// }
-
 export class DragClient {
   private static instance: DragClient;
 

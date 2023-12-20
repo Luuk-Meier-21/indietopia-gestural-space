@@ -134,6 +134,7 @@ export class PlanetBodyElement extends PlanetComponent {
   }
 
   handleDragStart() {
+    console.log("start");
     this.style.opacity = "0.4";
   }
 
@@ -142,19 +143,19 @@ export class PlanetBodyElement extends PlanetComponent {
   }
 
   handleDragOver(e) {
+    console.log("over");
     e.preventDefault();
+    console.log(e);
     return false;
   }
 
-  handleDragEnter() {
-    this.classList.add("over");
-  }
-
   handleDragLeave() {
+    console.log("leave");
     this.classList.remove("over");
   }
 
   handleDrop(e) {
+    console.log("drop");
     e.stopPropagation(); // stops the browser from redirecting.
     console.log(e);
     return false;
@@ -163,10 +164,22 @@ export class PlanetBodyElement extends PlanetComponent {
   connectedCallback(): void {
     this.setAttribute("draggable", "true");
 
+    this.addEventListener("pointerenter", () => {
+      const e = new Event("dragstart");
+      const a = new Event("dragover");
+
+      this.dispatchEvent(e);
+      this.dispatchEvent(a);
+    });
+
+    this.addEventListener("pointermover", () => {
+      const e = new Event("drag");
+
+      this.dispatchEvent(e);
+    });
+
     this.addEventListener("dragstart", this.handleDragStart);
     this.addEventListener("dragover", this.handleDragOver);
-    this.addEventListener("dragenter", this.handleDragEnter);
-    this.addEventListener("dragleave", this.handleDragLeave);
     this.addEventListener("dragend", this.handleDragEnd);
     this.addEventListener("drop", this.handleDrop);
 
