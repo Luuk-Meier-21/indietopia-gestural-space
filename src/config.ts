@@ -20,7 +20,7 @@ export const PLANETS_CONFIG: Planet[] = [
     description:
       "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.",
     scale: 0.4,
-    puzzleScaleMultiplier: 20,
+    // puzzleScaleMultiplier: 10,
     solarOffsetAngle: -20,
     orbitalOffset: -10,
     image: "/planets/mercury.svg",

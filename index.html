@@ -17,7 +17,7 @@
       <stage-element
         id="planet-sandbox"
         data-active-stages="1"
-        class="group flex h-[100vh] w-[100vw] items-center overflow-hidden transition-[width] duration-2000 will-change-auto"
+        class="group pointer-events-none flex h-[100vh] w-[100vw] items-center overflow-hidden transition-[width] duration-2000 will-change-auto"
       >
         <div
           class="relative flex w-full -translate-x-[25vw] items-center justify-between"
@@ -27,7 +27,7 @@
             class="aspect-square w-[90vw] -translate-x-1/2 scale-[1.2] rounded-full"
           >
             <img
-              class="duration-3000 w-full object-cover transition-transform group-data-[stage-active]:rotate-12"
+              class="w-full object-cover transition-transform duration-3000 group-data-[stage-active]:rotate-12"
               src="/planets/sun.svg"
               alt=""
             />
@@ -80,7 +80,7 @@
         class="fixed bottom-0 left-0 right-0 w-full translate-y-[0%] transition-[transform_opacity] duration-1500 ease-in data-[stage-inactive]:translate-y-[100%] data-[stage-inactive]:opacity-0"
       >
         <div
-          class="flex w-full bg-gradient-to-t from-space-blue-900 via-space-blue-900/70 via-70% to-space-blue-900/0"
+          class="flex w-full bg-gradient-to-t from-space-blue-900 via-space-blue-900/70 via-30% to-space-blue-900/0"
         >
           <div class="flex w-full justify-around pb-5 text-white">
             <planet-puzzle-card-element data-index="0">
@@ -124,7 +124,7 @@
     <template id="planet-orbit-template">
       <div
         id="planet-orbit"
-        class="absolute left-0 top-1/2 flex aspect-square origin-center -translate-x-1/2 -translate-y-1/2 items-center justify-end rounded-full ring-px ring-blue-300/20 will-change-transform"
+        class="absolute left-0 top-1/2 flex aspect-square origin-center -translate-x-1/2 -translate-y-1/2 items-center justify-end rounded-full ring-px ring-blue-300/20 will-change-[transform_opacity]"
       >
         <div
           id="planet-orbit-detail"
@@ -138,10 +138,10 @@
     </template>
     <!-- planet body -->
     <template id="planet-body-template">
-      <div id="planet-body" class="origin-center">
+      <div id="planet-body" class="pointer-events-auto origin-center">
         <div
           id="planet-surface"
-          class="relative z-20 flex aspect-square h-[1vw] origin-center items-center rounded-full transition-transform duration-2000 ease-in-out will-change-transform"
+          class="relative z-50 flex aspect-square h-[1vw] origin-center items-center rounded-full transition-transform duration-2000 ease-in-out will-change-transform"
         >
           <img
             class="h-full object-fill object-center"
@@ -155,7 +155,7 @@
     <template id="planet-puzzle-card-template">
       <article
         id="planet-puzzle-card"
-        class="flex flex-col items-center gap-y-[70px] pt-10"
+        class="flex flex-col items-center gap-y-[70px] pt-10 font-bold"
       >
         <slot class="relative"></slot>
         <h2 id="planet-name">No planet name set</h2>
@@ -170,7 +170,7 @@
       >
         <div
           id="planet-info-inner"
-          class="bg-space-blue-1000/40 pointer-events-auto rounded-lg p-5 text-sm backdrop-blur-md transition-opacity duration-100"
+          class="pointer-events-auto rounded-lg bg-space-blue-1000/40 p-5 text-sm backdrop-blur-md transition-opacity duration-100"
         >
           <h2 id="planet-info-heading" class="mb-2 font-bold">tess</h2>
           <p id="planet-info-text" class="flex">
@@ -189,7 +189,7 @@
         <div class="flex justify-end p-2">
           <div
             id="zoom-text"
-            class="bg-space-blue-1000/40 rounded-lg p-2 font-bold backdrop-blur-md"
+            class="rounded-lg bg-space-blue-1000/40 p-2 font-bold backdrop-blur-md"
           >
             100%
           </div>

@@ -46,6 +46,8 @@ export class PlanetOrbitElement
 {
   static componentName = "planet-orbit";
 
+  currentStage: number;
+
   hasSolarRotation: boolean = false;
   hasInitRender = false;
 
@@ -60,9 +62,19 @@ export class PlanetOrbitElement
     return `rotate(${value}deg)`;
   }
 
+  setOpacity(): void {
+    // if (this.currentStage > 0) {
+    //   this.style.opacity = `${value}`;
+    // } else {
+    //   inner.style.opacity = "0";
+    // }
+  }
+
   onStageChange(event: StageEvent): void {
+    this.currentStage = event.detail.currentStage;
     this.hasSolarRotation = event.detail.currentStage > 0;
     this.renderAttributes();
+    this.setOpacity();
   }
 
   renderOrbit() {
@@ -97,6 +109,7 @@ export class PlanetBodyElement extends PlanetComponent {
   static componentName = "planet-body";
 
   currentStage = 0;
+  isSolved = false;
 
   constructor() {
     super();
@@ -120,7 +133,55 @@ export class PlanetBodyElement extends PlanetComponent {
     surface.style.transform = `scale(${this.bodyScale})`;
   }
 
+  handleDragStart() {
+    this.style.opacity = "0.4";
+  }
+
+  handleDragEnd() {
+    this.style.opacity = "1";
+  }
+
+  handleDragOver(e) {
+    e.preventDefault();
+    return false;
+  }
+
+  handleDragEnter() {
+    this.classList.add("over");
+  }
+
+  handleDragLeave() {
+    this.classList.remove("over");
+  }
+
+  handleDrop(e) {
+    e.stopPropagation(); // stops the browser from redirecting.
+    console.log(e);
+    return false;
+  }
+
   connectedCallback(): void {
+    this.setAttribute("draggable", "true");
+
+    this.addEventListener("dragstart", this.handleDragStart);
+    this.addEventListener("dragover", this.handleDragOver);
+    this.addEventListener("dragenter", this.handleDragEnter);
+    this.addEventListener("dragleave", this.handleDragLeave);
+    this.addEventListener("dragend", this.handleDragEnd);
+    this.addEventListener("drop", this.handleDrop);
+
+    // this.addEventListener("pointerenter", (event) =>
+    //   this.handlePointerEnter(event),
+    // );
+
+    // this.addEventListener("pointermove", (event) =>
+    //   this.handlePointerMove(event),
+    // );
+
+    // this.addEventListener("pointerleave", (event) =>
+    //   this.handleLeaveEnter(event),
+    // );
+
     this.config = this.getPlanetConfig();
     const component = this.cloneTemplate(PlanetBodyElement.componentName);
 
@@ -206,9 +267,6 @@ export class PlanetInfoCardElement extends PlanetComponent {
       return false;
     }
 
-    // const m = 0.7;
-    // const offset = 1;
-
     // body
     const bodyScale = siblingBody.bodyScale;
     const { x, y } = circleVectorAtDegrees(0, 0, bodyScale / 2, 45);
@@ -229,8 +287,6 @@ export class PlanetInfoCardElement extends PlanetComponent {
 
   handleViewportChange(event) {
     const view: VisualViewport = event.target;
-
-    console.log(map(view.scale, 1, 3, this.minOpacity, 1));
 
     this.setOpacity(map(view.scale, 1, 3, this.minOpacity, 1));
   }
@@ -255,12 +311,5 @@ export class PlanetInfoCardElement extends PlanetComponent {
     this.replaceChildren(...component.children);
 
     this.updateCardPosition();
-
-    // this.style.transform = `transform(${siblingBody.bodyScale * n}%, ${
-    //   siblingBody.bodyScale * n
-    // }%)`;
-    // console.log(
-    //   `transform(${siblingBody.bodyScale * n}%, ${siblingBody.bodyScale * n}%)`,
-    // );
   }
 }
