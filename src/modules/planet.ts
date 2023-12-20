@@ -1,6 +1,5 @@
 import { PLANETS_CONFIG, PUZZLE_PLANET_MULTIPLIER } from "../config";
 import { Component, StageChangeListener } from "./component";
-import { DragClient } from "./drag";
 import { circleVectorAtDegrees, map } from "./math";
 import { StageEvent } from "./stage-event";
 
@@ -63,7 +62,7 @@ export class PlanetOrbitElement
     return `rotate(${value}deg)`;
   }
 
-  setOpacity(value: number): void {
+  setOpacity(): void {
     // if (this.currentStage > 0) {
     //   this.style.opacity = `${value}`;
     // } else {
@@ -75,7 +74,7 @@ export class PlanetOrbitElement
     this.currentStage = event.detail.currentStage;
     this.hasSolarRotation = event.detail.currentStage > 0;
     this.renderAttributes();
-    this.setOpacity(0);
+    this.setOpacity();
   }
 
   renderOrbit() {
@@ -134,11 +133,11 @@ export class PlanetBodyElement extends PlanetComponent {
     surface.style.transform = `scale(${this.bodyScale})`;
   }
 
-  handleDragStart(e) {
+  handleDragStart() {
     this.style.opacity = "0.4";
   }
 
-  handleDragEnd(e) {
+  handleDragEnd() {
     this.style.opacity = "1";
   }
 
@@ -147,11 +146,11 @@ export class PlanetBodyElement extends PlanetComponent {
     return false;
   }
 
-  handleDragEnter(e) {
+  handleDragEnter() {
     this.classList.add("over");
   }
 
-  handleDragLeave(e) {
+  handleDragLeave() {
     this.classList.remove("over");
   }
 

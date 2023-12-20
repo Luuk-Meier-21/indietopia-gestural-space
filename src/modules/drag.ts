@@ -30,7 +30,7 @@ export class DragClient {
 
     console.log(this.selectedElement);
 
-    this.selectedElement.addEventListener("drag", (event) => {
+    this.selectedElement.addEventListener("drag", () => {
       // console.log(event);
     });
 
@@ -39,7 +39,7 @@ export class DragClient {
     });
   }
 
-  dropSelected(dropElement: HTMLElement) {}
+  dropSelected() {}
 
   clearSelected() {}
 }
