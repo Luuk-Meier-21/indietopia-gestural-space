@@ -1,17 +1,26 @@
 import { debugKeydown } from "./modules/debug";
 import { HoldLoader } from "./modules/loader";
+import { DragDrop } from "./modules/drag";
 import { Stage } from "./modules/stage";
 import { StageElement } from "./modules/stage-element";
 
 import "./style.css";
 
 // TODO: Select target elements based on data-... selectors, instead of `.class` `*[data-...]`.
-// TODO: Move drag / drop logic to isolated class with its own methods.
-// TODO: Move loader/hold logic to class
 
 window.customElements.define("stage-element", StageElement);
 
 let loader: HoldLoader;
+let drag: DragDrop;
+let dragElement: HTMLElement | null ;
+let loaderInterval: number;
+let mouseDragStart: number;
+let selectCheck: number;
+let progress: number = 0;
+let mouseX: number;
+let mouseY: number;
+let isDragged: boolean = false;
+let disableTouch: boolean = false;
 
 function onDOMLoaded(_: Event) {
   Stage.getInstance.setupInitialStage();
@@ -31,21 +40,20 @@ function onDOMLoaded(_: Event) {
     "2d",
   ) as CanvasRenderingContext2D;
 
+  dragElement = document.getElementById(
+    "dragged"
+  ) as HTMLElement;
+
+
   loader = new HoldLoader(ctx, canvas.width, canvas.height);
+  drag = new DragDrop(isDragged, dragElement);
 }
 
 document.addEventListener("DOMContentLoaded", onDOMLoaded);
 document.addEventListener("keydown", debugKeydown);
 
-let id: number;
-let dragStart: number;
-let selectCheck: number;
-let progress: number = 0;
-let mouseX: number;
-let mouseY: number;
-let isDragged: boolean = false;
-let draggedElement: any = document.getElementById("dragged");
-let touchEnter: boolean = false;
+
+
 
 // Event listener and processing of touch inputs
 window.addEventListener("touchmove", (event) => {
@@ -56,38 +64,47 @@ window.addEventListener("touchmove", (event) => {
   }
 });
 
+
 window.addEventListener("mousemove", (event) => {
   mouseX = event.clientX;
   mouseY = event.clientY;
+
   onPointerMove();
 });
 
+
 function onPointerMove() {
-  let touchedElement = document.elementFromPoint(
+
+  
+  let touchedElement = document.elementsFromPoint(
     mouseX,
     mouseY,
-  ) as HTMLElement | null;
+  ) as Element[] | null;
 
-  // User elementsFromPoint
-
-  // TODO: Look for parent node untill selector is found:
-  if (touchedElement != null) {
-    if (
-      touchedElement.parentElement?.classList?.contains("selectable") ||
-      (touchedElement.parentElement?.classList?.contains("dragtarget") &&
-        isDragged)
-    ) {
-      onPointerEnter(touchedElement.parentNode);
-    } else {
+  if (touchedElement){ 
+    let hasSelectables = false;
+    for (let i : number = 0; i < touchedElement.length; i++) {
+      if (touchedElement[i].classList.contains("selectable")) {
+        hasSelectables = true;
+        onSelectEnter(touchedElement[i]);
+      } else if (touchedElement[i].classList.contains("dragtarget") && drag.isDragged) {
+        console.log("start drop");
+        hasSelectables = true;
+        onDropEnter(touchedElement[i]);
+      }
+    } 
+    if (!hasSelectables) {
       onPointerLeave();
-      touchEnter = false;
     }
-  }
+          
+  } 
+
 }
+
 
 function progressbar() {
   if (progress >= 1) {
-    clearInterval(id);
+    clearInterval(loaderInterval);
     loader.clear();
   } else {
     progress += 0.01;
@@ -95,60 +112,64 @@ function progressbar() {
   }
 }
 
-function onPointerEnter(pointerSelected: any) {
-  if (!touchEnter) {
-    touchEnter = true;
-    console.log(touchEnter);
-    if (
-      (!isDragged && !pointerSelected.classList.contains("dragtarget")) ||
-      (isDragged && pointerSelected.classList.contains("dragtarget"))
-    ) {
-      selectCheck = setTimeout(delayedClick, 2000, pointerSelected);
-      console.log("started select");
 
-      // loading bar
-      id = setInterval(progressbar, 20);
-    }
+function onSelectEnter(pointerSelected: Element) {
+  if (!disableTouch) {
+    disableTouch = true;
+    selectCheck = setTimeout(delayedSelect, 2000, pointerSelected);
+    loaderInterval = setInterval(progressbar, 20);
   }
 }
 
-function onPointerLeave() {
-  progress = 0;
-  touchEnter = false;
+function onDropEnter(pointerSelected: Element) {
 
-  clearInterval(id);
+  if (!disableTouch) {
+    disableTouch = true;
+    selectCheck = setTimeout(delayedDrop, 2000, pointerSelected);
+    loaderInterval = setInterval(progressbar, 20);
+  }
+
+}
+
+function onPointerLeave() {
+
+  progress = 0;
+  disableTouch = false;
+
+  clearInterval(loaderInterval);
   clearTimeout(selectCheck);
 
   loader.clear();
 }
 
-function delayedClick(selectedElement: any) {
-  // if (i == 1) {
-  //   // Thing has been selected, so change things
-  //   // document.getElementById("text").innerHTML = "a";
-  //   console.log("selected");
-  // }
-  // start draggin object
-  if (selectedElement.classList.contains("selectdrag")) {
-    console.log("drag");
-    selectedElement.style.visibility = "hidden";
-    dragStart = setInterval(onDragStart, 20);
-  }
 
-  if (selectedElement.classList.contains("dragtarget")) {
-    clearInterval(dragStart);
-    draggedElement.style.visibility = "hidden";
-    draggedElement.style.left = 0 + "px";
-    draggedElement.style.top = 0 + "px";
-    selectedElement.querySelector(".selectdrag").style.visibility = "visible";
-    isDragged = false;
+function delayedSelect(selectedElement: HTMLElement) {
+
+  if (selectedElement && dragElement) {
+    if (selectedElement.classList.contains("selectdrag")) {
+      mouseDragStart = setInterval(moveDraggedObject, 20);
+
+      drag.startDrag(selectedElement);
+    }    
   }
 }
 
-function onDragStart() {
-  isDragged = true;
+function moveDraggedObject() {
+  drag.startIntervalDrag(mouseX, mouseY);
+}
 
-  draggedElement.style.visibility = "visible";
-  draggedElement.style.left = mouseX - 30 + "px";
-  draggedElement.style.top = mouseY - 10 + "px";
+function delayedDrop (selectedElement: HTMLElement) {
+
+  if (selectedElement !== null && drag.draggedElement !== null) {
+    let elementChildren : HTMLElement[] = Array.from(selectedElement.querySelectorAll(`*`));
+    if (elementChildren) {
+      for (let j : number = 0; j < elementChildren.length; j++) {
+        if (elementChildren[j].classList.contains("selectdrag")) {
+          clearInterval(mouseDragStart);
+          drag.stopDrag(elementChildren[j] as HTMLElement);
+        }
+      }
+    }
+  }
+  
 }
