@@ -27,7 +27,6 @@ startDrag(selectedElement: HTMLElement) {
 
 stopDrag(selectedElement: HTMLElement) {
 
-    console.log(selectedElement);
     this.isDragged = false;
     this.draggedElement.style.visibility = "hidden";
     this.draggedElement.style.left = -100 + "px";

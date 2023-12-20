@@ -83,12 +83,13 @@ function onPointerMove() {
 
   if (touchedElement){ 
     let hasSelectables = false;
-    for (let i : number = 0; i < touchedElement.length; i++) {
-      if (touchedElement[i].classList.contains("selectable")) {
+    let tempArray : HTMLElement[] = Array.from(touchedElement) as HTMLElement[];
+    for (let i : number = 0; i < tempArray.length; i++) {
+      // if (touchedElement[i].classList.contains("selectable")) {
+      if (tempArray[i].dataset.type === "selectable"){
         hasSelectables = true;
         onSelectEnter(touchedElement[i]);
-      } else if (touchedElement[i].classList.contains("dragtarget") && drag.isDragged) {
-        console.log("start drop");
+      } else if (tempArray[i].dataset.type === "dragtarget" && drag.isDragged) {
         hasSelectables = true;
         onDropEnter(touchedElement[i]);
       }
@@ -146,9 +147,8 @@ function onPointerLeave() {
 function delayedSelect(selectedElement: HTMLElement) {
 
   if (selectedElement && dragElement) {
-    if (selectedElement.classList.contains("selectdrag")) {
+    if (selectedElement.dataset.draggable === "true") {
       mouseDragStart = setInterval(moveDraggedObject, 20);
-
       drag.startDrag(selectedElement);
     }    
   }
@@ -164,7 +164,7 @@ function delayedDrop (selectedElement: HTMLElement) {
     let elementChildren : HTMLElement[] = Array.from(selectedElement.querySelectorAll(`*`));
     if (elementChildren) {
       for (let j : number = 0; j < elementChildren.length; j++) {
-        if (elementChildren[j].classList.contains("selectdrag")) {
+        if (elementChildren[j].dataset.draggable = "true") {
           clearInterval(mouseDragStart);
           drag.stopDrag(elementChildren[j] as HTMLElement);
         }
