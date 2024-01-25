@@ -51,19 +51,29 @@ export class DragDrop {
       selectedElement.style.opacity = "0.3";
       selectedElement.setAttribute("data-draggable", "false");
 
-      // selectedElement.style.visibility = "hidden";
+      if (selectedElement.getAttribute("data-originalsrc")) {
+        selectedElement.src = selectedElement.getAttribute("data-originalsrc");
+      }
     }
   }
 
   stopDrag(selectedElement: HTMLImageElement) {
     if (selectedElement) {
-      // selectedElement.style.visibility = "visible";
       selectedElement.style.opacity = "1";
       selectedElement.setAttribute("data-draggable", "true");
+
+      // Saves the original src, to revert to after moving the planet again
+      selectedElement.setAttribute("data-originalsrc", selectedElement.src);
 
       selectedElement.src = this.draggedElement
         .querySelector("*")
         .getAttribute("src");
+
+      // selectedElement.getBoundingClientRect().width =
+      //   this.draggedElement.querySelector("img").width;
+
+      // selectedElement.getBoundingClientRect().height =
+      //   this.draggedElement.querySelector("img").height;
     }
     this.isDragged = false;
     this.draggedElement.style.visibility = "hidden";

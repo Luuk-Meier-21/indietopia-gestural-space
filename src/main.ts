@@ -198,6 +198,7 @@ function delayedDrop(selectedElement: HTMLElement) {
   if (selectedElement !== null && drag.draggedElement !== null) {
     if (selectedElement.getAttribute("data-draggable") === "false") {
       clearInterval(mouseDragStart);
+      console.log(selectedElement);
       drag.stopDrag(selectedElement as HTMLImageElement);
     }
     // let elementChildren: HTMLElement[] = Array.from(
