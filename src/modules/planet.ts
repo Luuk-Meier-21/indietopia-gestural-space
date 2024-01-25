@@ -178,10 +178,10 @@ export class PlanetBodyElement extends PlanetComponent {
       this.dispatchEvent(e);
     });
 
-    this.addEventListener("dragstart", this.handleDragStart);
-    this.addEventListener("dragover", this.handleDragOver);
-    this.addEventListener("dragend", this.handleDragEnd);
-    this.addEventListener("drop", this.handleDrop);
+    // this.addEventListener("dragstart", this.handleDragStart);
+    // this.addEventListener("dragover", this.handleDragOver);
+    // this.addEventListener("dragend", this.handleDragEnd);
+    // this.addEventListener("drop", this.handleDrop);
 
     // this.addEventListener("pointerenter", (event) =>
     //   this.handlePointerEnter(event),
@@ -205,6 +205,8 @@ export class PlanetBodyElement extends PlanetComponent {
 
     const image = surface.querySelector("img") as HTMLElement;
     image.setAttribute("src", this.config.image);
+    image.setAttribute("data-type", "selectable");
+    image.setAttribute("data-draggable", "true");
 
     this.replaceChildren(...component.children);
   }

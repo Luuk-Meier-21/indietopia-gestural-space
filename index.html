@@ -8,6 +8,11 @@
   </head>
   <body class="overflow-hidden bg-space-blue-900">
     <script type="module" src="/src/main.ts"></script>
+
+    <canvas id="selectcanvas">canvas</canvas>
+
+    <div id="dragged"><img /></div>
+
     <span id="cursor"></span>
     <main
       id="main"
@@ -34,37 +39,58 @@
           </div>
           <!-- Planets -->
           <planet-orbit-element width="30" data-index="0">
-            <planet-body-element data-index="0"></planet-body-element>
+            <planet-body-element
+              data-index="0"
+              data-type="dragtarget"
+            ></planet-body-element>
             <planet-info-card-element data-index="0"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="38" data-index="1">
-            <planet-body-element data-index="1"></planet-body-element>
+            <planet-body-element
+              data-index="1"
+              data-type="dragtarget"
+            ></planet-body-element>
             <planet-info-card-element data-index="1"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="50" data-index="2">
-            <planet-body-element data-index="2"></planet-body-element>
+            <planet-body-element
+              data-index="2"
+              data-type="dragtarget"
+            ></planet-body-element>
             <planet-info-card-element data-index="2"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="58" data-index="3">
-            <planet-body-element data-index="3"></planet-body-element>
+            <planet-body-element
+              data-index="3"
+              data-type="dragtarget"
+            ></planet-body-element>
             <planet-info-card-element data-index="3"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="70" data-index="4">
-            <planet-body-element data-index="4"></planet-body-element>
+            <planet-body-element
+              data-index="4"
+              data-type="dragtarget"
+            ></planet-body-element>
             <planet-info-card-element data-index="4"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="85" data-index="5">
-            <planet-body-element data-index="5"></planet-body-element>
+            <planet-body-element
+              data-index="5"
+              data-type="dragtarget"
+            ></planet-body-element>
             <planet-info-card-element data-index="5"></planet-info-card-element>
           </planet-orbit-element>
 
           <planet-orbit-element width="98" data-index="6">
-            <planet-body-element data-index="6"></planet-body-element>
+            <planet-body-element
+              data-index="6"
+              data-type="dragtarget"
+            ></planet-body-element>
             <planet-info-card-element data-index="6"></planet-info-card-element>
           </planet-orbit-element>
 
@@ -84,36 +110,60 @@
         >
           <div class="flex w-full justify-around pb-5 text-white">
             <planet-puzzle-card-element data-index="0">
-              <planet-body-element data-index="0"></planet-body-element>
+              <planet-body-element
+                data-index="0"
+                data-type="dragtarget"
+              ></planet-body-element>
             </planet-puzzle-card-element>
 
             <planet-puzzle-card-element data-index="1">
-              <planet-body-element data-index="1"></planet-body-element>
+              <planet-body-element
+                data-index="1"
+                data-type="dragtarget"
+              ></planet-body-element>
             </planet-puzzle-card-element>
 
             <planet-puzzle-card-element data-index="2">
-              <planet-body-element data-index="2"></planet-body-element>
+              <planet-body-element
+                data-index="2"
+                data-type="dragtarget"
+              ></planet-body-element>
             </planet-puzzle-card-element>
 
             <planet-puzzle-card-element data-index="3">
-              <planet-body-element data-index="3"></planet-body-element>
+              <planet-body-element
+                data-index="3"
+                data-type="dragtarget"
+              ></planet-body-element>
             </planet-puzzle-card-element>
 
             <planet-puzzle-card-element data-index="4">
-              <planet-body-element data-index="4"></planet-body-element>
+              <planet-body-element
+                data-index="4"
+                data-type="dragtarget"
+              ></planet-body-element>
             </planet-puzzle-card-element>
 
             <planet-puzzle-card-element data-index="5">
-              <planet-body-element data-index="5"></planet-body-element>
+              <planet-body-element
+                data-index="5"
+                data-type="dragtarget"
+              ></planet-body-element>
             </planet-puzzle-card-element>
 
             <planet-puzzle-card-element data-index="6">
-              <planet-body-element data-index="6"></planet-body-element>
+              <planet-body-element
+                data-index="6"
+                data-type="dragtarget"
+              ></planet-body-element>
             </planet-puzzle-card-element>
 
-            <planet-puzzle-card-element data-index="7">
-              <planet-body-element data-index="7"></planet-body-element>
-            </planet-puzzle-card-element>
+            <!-- <planet-puzzle-card-element data-index="7">
+              <planet-body-element
+                data-index="7"
+                data-type="dragtarget"
+              ></planet-body-element>
+            </planet-puzzle-card-element> -->
           </div>
         </div>
       </stage-element>

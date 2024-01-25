@@ -9,6 +9,8 @@ import { Stage } from "./modules/stage";
 import { StageElement } from "./modules/stage-element";
 import { StageEventListener } from "./modules/stage-event";
 import { ZoomComponent } from "./modules/zoom";
+import { HoldLoader } from "./modules/loader";
+import { DragDrop } from "./modules/drag";
 
 import "./style.css";
 
@@ -22,8 +24,40 @@ window.customElements.define(
 window.customElements.define("planet-info-card-element", PlanetInfoCardElement);
 window.customElements.define("zoom-element", ZoomComponent);
 
+let loader: HoldLoader;
+let drag: DragDrop;
+let dragElement: HTMLElement | null;
+let loaderInterval: number;
+let mouseDragStart: number;
+let selectCheck: number;
+let progress: number = 0;
+let mouseX: number;
+let mouseY: number;
+let isDragged: boolean = false;
+let disableTouch: boolean = false;
+
 function onDOMLoaded() {
   Stage.getInstance.setupInitialStage();
+
+  let canvas = document.getElementById(
+    "selectcanvas",
+  ) as HTMLCanvasElement | null;
+  if (canvas === null) {
+    canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+  }
+
+  canvas.setAttribute("width", screen.width.toString());
+  canvas.setAttribute("height", screen.height.toString());
+
+  let ctx: CanvasRenderingContext2D = canvas.getContext(
+    "2d",
+  ) as CanvasRenderingContext2D;
+
+  dragElement = document.getElementById("dragged") as HTMLElement;
+
+  loader = new HoldLoader(ctx, canvas.width, canvas.height);
+  drag = new DragDrop(isDragged, dragElement);
 
   // document.addEventListener("pointermove", (e) => {
   //   console.log(e);
@@ -55,3 +89,113 @@ document.addEventListener("DOMContentLoaded", onDOMLoaded);
 
 // DEBUG
 document.addEventListener("keydown", debugKeydown);
+
+window.addEventListener("touchmove", (event) => {
+  if (event.touches[0]) {
+    mouseX = event.touches[0].clientX;
+    mouseY = event.touches[0].clientY;
+    onPointerMove();
+  }
+});
+
+window.addEventListener("mousemove", (event) => {
+  mouseX = event.clientX;
+  mouseY = event.clientY;
+
+  onPointerMove();
+});
+
+function onPointerMove() {
+  let touchedElement = document.elementsFromPoint(mouseX, mouseY) as
+    | Element[]
+    | null;
+
+  if (touchedElement) {
+    let hasSelectables = false;
+    let tempArray: HTMLElement[] = Array.from(touchedElement) as HTMLElement[];
+    for (let i: number = 0; i < tempArray.length; i++) {
+      if (tempArray[i].dataset.type === "selectable") {
+        hasSelectables = true;
+        onSelectEnter(touchedElement[i]);
+      } else if (tempArray[i].dataset.type === "dragtarget" && drag.isDragged) {
+        hasSelectables = true;
+        onDropEnter(touchedElement[i]);
+      }
+    }
+    if (!hasSelectables) {
+      onPointerLeave();
+    }
+  }
+}
+
+function progressbar() {
+  if (progress >= 1) {
+    clearInterval(loaderInterval);
+    loader.clear();
+  } else {
+    progress += 0.01;
+    loader.draw(progress, mouseX, mouseY);
+  }
+}
+
+function onSelectEnter(pointerSelected: Element) {
+  if (!disableTouch) {
+    disableTouch = true;
+    selectCheck = setTimeout(delayedSelect, 2000, pointerSelected);
+    loaderInterval = setInterval(progressbar, 20);
+  }
+}
+
+function onDropEnter(pointerSelected: Element) {
+  if (!disableTouch) {
+    disableTouch = true;
+    selectCheck = setTimeout(delayedDrop, 2000, pointerSelected);
+    loaderInterval = setInterval(progressbar, 20);
+  }
+}
+
+function onPointerLeave() {
+  progress = 0;
+  disableTouch = false;
+
+  clearInterval(loaderInterval);
+  clearTimeout(selectCheck);
+
+  loader.clear();
+}
+
+function delayedSelect(selectedElement: HTMLImageElement) {
+  if (selectedElement && dragElement) {
+    if (selectedElement.dataset.draggable === "true") {
+      console.log(selectedElement.width, selectedElement.height);
+      drag.draggedElement.querySelector("img").src = selectedElement.src;
+      drag.draggedElement.querySelector("img").width =
+        selectedElement.getBoundingClientRect().width;
+      drag.draggedElement.querySelector("img").height =
+        selectedElement.getBoundingClientRect().height;
+      mouseDragStart = setInterval(moveDraggedObject, 20);
+      drag.startDrag(selectedElement);
+    }
+  }
+}
+// Updates the location of the dragged object to be the same as the mouse
+function moveDraggedObject() {
+  drag.startIntervalDrag(mouseX, mouseY);
+}
+
+function delayedDrop(selectedElement: HTMLElement) {
+  if (selectedElement !== null && drag.draggedElement !== null) {
+    let elementChildren: HTMLElement[] = Array.from(
+      selectedElement.querySelectorAll(`*`),
+    );
+    if (elementChildren) {
+      for (let j: number = 0; j < elementChildren.length; j++) {
+        if (elementChildren[j].dataset.draggable == "true") {
+          clearInterval(mouseDragStart);
+          console.log(elementChildren[j] as HTMLElement);
+          drag.stopDrag(elementChildren[j] as HTMLImageElement);
+        }
+      }
+    }
+  }
+}
