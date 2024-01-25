@@ -18,6 +18,7 @@ canvas {
   user-select: none;
   visibility: hidden;
   position: absolute;
+  z-index: 10;
 }
 
 #dragtarget {

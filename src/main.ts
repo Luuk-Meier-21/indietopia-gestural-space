@@ -114,10 +114,18 @@ function onPointerMove() {
     let hasSelectables = false;
     let tempArray: HTMLElement[] = Array.from(touchedElement) as HTMLElement[];
     for (let i: number = 0; i < tempArray.length; i++) {
-      if (tempArray[i].dataset.type === "selectable") {
+      if (
+        tempArray[i].dataset.type === "selectable" &&
+        tempArray[i].getAttribute("data-draggable") === "true" &&
+        !drag.isDragged
+      ) {
         hasSelectables = true;
         onSelectEnter(touchedElement[i]);
-      } else if (tempArray[i].dataset.type === "dragtarget" && drag.isDragged) {
+      } else if (
+        tempArray[i].dataset.type === "selectable" &&
+        tempArray[i].getAttribute("data-draggable") === "false" &&
+        drag.isDragged
+      ) {
         hasSelectables = true;
         onDropEnter(touchedElement[i]);
       }
@@ -167,13 +175,16 @@ function onPointerLeave() {
 function delayedSelect(selectedElement: HTMLImageElement) {
   if (selectedElement && dragElement) {
     if (selectedElement.dataset.draggable === "true") {
-      console.log(selectedElement.width, selectedElement.height);
       drag.draggedElement.querySelector("img").src = selectedElement.src;
+
       drag.draggedElement.querySelector("img").width =
         selectedElement.getBoundingClientRect().width;
+
       drag.draggedElement.querySelector("img").height =
         selectedElement.getBoundingClientRect().height;
+
       mouseDragStart = setInterval(moveDraggedObject, 20);
+
       drag.startDrag(selectedElement);
     }
   }
@@ -185,17 +196,20 @@ function moveDraggedObject() {
 
 function delayedDrop(selectedElement: HTMLElement) {
   if (selectedElement !== null && drag.draggedElement !== null) {
-    let elementChildren: HTMLElement[] = Array.from(
-      selectedElement.querySelectorAll(`*`),
-    );
-    if (elementChildren) {
-      for (let j: number = 0; j < elementChildren.length; j++) {
-        if (elementChildren[j].dataset.draggable == "true") {
-          clearInterval(mouseDragStart);
-          console.log(elementChildren[j] as HTMLElement);
-          drag.stopDrag(elementChildren[j] as HTMLImageElement);
-        }
-      }
+    if (selectedElement.getAttribute("data-draggable") === "false") {
+      clearInterval(mouseDragStart);
+      drag.stopDrag(selectedElement as HTMLImageElement);
     }
+    // let elementChildren: HTMLElement[] = Array.from(
+    //   selectedElement.querySelectorAll(`*`),
+    // );
+    // if (elementChildren) {
+    //   for (let j: number = 0; j < elementChildren.length; j++) {
+    //     if (elementChildren[j].dataset.draggable == "false") {
+    //       clearInterval(mouseDragStart);
+    //       drag.stopDrag(elementChildren[j] as HTMLImageElement);
+    //     }
+    //   }
+    // }
   }
 }

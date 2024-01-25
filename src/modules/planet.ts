@@ -162,7 +162,7 @@ export class PlanetBodyElement extends PlanetComponent {
   }
 
   connectedCallback(): void {
-    this.setAttribute("draggable", "true");
+    // this.setAttribute("draggable", "true");
 
     this.addEventListener("pointerenter", () => {
       const e = new Event("dragstart");
@@ -206,7 +206,13 @@ export class PlanetBodyElement extends PlanetComponent {
     const image = surface.querySelector("img") as HTMLElement;
     image.setAttribute("src", this.config.image);
     image.setAttribute("data-type", "selectable");
-    image.setAttribute("data-draggable", "true");
+
+    if (this.getAttribute("data") === "droptarget") {
+      image.style.opacity = "0.3";
+      image.setAttribute("data-draggable", "false");
+    } else {
+      image.setAttribute("data-draggable", "true");
+    }
 
     this.replaceChildren(...component.children);
   }

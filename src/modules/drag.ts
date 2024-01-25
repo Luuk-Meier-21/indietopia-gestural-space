@@ -47,20 +47,22 @@ export class DragDrop {
   }
 
   startDrag(selectedElement: HTMLElement) {
-    console.log(this.draggedElement.querySelector("img").src);
     if (selectedElement) {
-      selectedElement.style.visibility = "hidden";
+      selectedElement.style.opacity = "0.3";
+      selectedElement.setAttribute("data-draggable", "false");
+
+      // selectedElement.style.visibility = "hidden";
     }
   }
 
   stopDrag(selectedElement: HTMLElement) {
     this.isDragged = false;
     this.draggedElement.style.visibility = "hidden";
-    this.draggedElement.style.left = -100 + "px";
-    this.draggedElement.style.top = -100 + "px";
 
     if (selectedElement) {
-      selectedElement.style.visibility = "visible";
+      // selectedElement.style.visibility = "visible";
+      selectedElement.style.opacity = "1";
+      selectedElement.setAttribute("data-draggable", "true");
     }
   }
 }
