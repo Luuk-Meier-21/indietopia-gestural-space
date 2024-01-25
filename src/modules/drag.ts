@@ -46,7 +46,7 @@ export class DragDrop {
       y - this.draggedElement.querySelector("img").height / 2 + "px";
   }
 
-  startDrag(selectedElement: HTMLElement) {
+  startDrag(selectedElement: HTMLImageElement) {
     if (selectedElement) {
       selectedElement.style.opacity = "0.3";
       selectedElement.setAttribute("data-draggable", "false");
@@ -55,14 +55,17 @@ export class DragDrop {
     }
   }
 
-  stopDrag(selectedElement: HTMLElement) {
-    this.isDragged = false;
-    this.draggedElement.style.visibility = "hidden";
-
+  stopDrag(selectedElement: HTMLImageElement) {
     if (selectedElement) {
       // selectedElement.style.visibility = "visible";
       selectedElement.style.opacity = "1";
       selectedElement.setAttribute("data-draggable", "true");
+
+      selectedElement.src = this.draggedElement
+        .querySelector("*")
+        .getAttribute("src");
     }
+    this.isDragged = false;
+    this.draggedElement.style.visibility = "hidden";
   }
 }
