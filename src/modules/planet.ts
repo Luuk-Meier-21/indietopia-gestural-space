@@ -134,6 +134,7 @@ export class PlanetBodyElement extends PlanetComponent {
   }
 
   handleDragStart() {
+    console.log("start");
     this.style.opacity = "0.4";
   }
 
@@ -142,33 +143,45 @@ export class PlanetBodyElement extends PlanetComponent {
   }
 
   handleDragOver(e) {
+    console.log("over");
     e.preventDefault();
+    console.log(e);
     return false;
   }
 
-  handleDragEnter() {
-    this.classList.add("over");
-  }
-
   handleDragLeave() {
+    console.log("leave");
     this.classList.remove("over");
   }
 
   handleDrop(e) {
+    console.log("drop");
     e.stopPropagation(); // stops the browser from redirecting.
     console.log(e);
     return false;
   }
 
   connectedCallback(): void {
-    this.setAttribute("draggable", "true");
+    // this.setAttribute("draggable", "true");
 
-    this.addEventListener("dragstart", this.handleDragStart);
-    this.addEventListener("dragover", this.handleDragOver);
-    this.addEventListener("dragenter", this.handleDragEnter);
-    this.addEventListener("dragleave", this.handleDragLeave);
-    this.addEventListener("dragend", this.handleDragEnd);
-    this.addEventListener("drop", this.handleDrop);
+    this.addEventListener("pointerenter", () => {
+      const e = new Event("dragstart");
+      const a = new Event("dragover");
+
+      this.dispatchEvent(e);
+      this.dispatchEvent(a);
+    });
+
+    this.addEventListener("pointermover", () => {
+      const e = new Event("drag");
+
+      this.dispatchEvent(e);
+    });
+
+    // this.addEventListener("dragstart", this.handleDragStart);
+    // this.addEventListener("dragover", this.handleDragOver);
+    // this.addEventListener("dragend", this.handleDragEnd);
+    // this.addEventListener("drop", this.handleDrop);
 
     // this.addEventListener("pointerenter", (event) =>
     //   this.handlePointerEnter(event),
@@ -192,6 +205,14 @@ export class PlanetBodyElement extends PlanetComponent {
 
     const image = surface.querySelector("img") as HTMLElement;
     image.setAttribute("src", this.config.image);
+    image.setAttribute("data-type", "selectable");
+
+    if (this.getAttribute("data") === "droptarget") {
+      image.style.opacity = "0.3";
+      image.setAttribute("data-draggable", "false");
+    } else {
+      image.setAttribute("data-draggable", "true");
+    }
 
     this.replaceChildren(...component.children);
   }
