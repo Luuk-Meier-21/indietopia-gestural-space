@@ -1,7 +1,7 @@
 // export class DragClient {
 //   private static instance: DragClient;
 
-import { addCompletedPlanet, completedCount } from "../main";
+import { addCompletedPlanet } from "../main";
 
 //   private selectedElement: HTMLElement | null = null;
 
