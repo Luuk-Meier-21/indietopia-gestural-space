@@ -36,6 +36,18 @@ let mouseY: number;
 let isDragged: boolean = false;
 let disableTouch: boolean = false;
 
+let completedCount = 0;
+
+export function addCompletedPlanet() {
+  completedCount++;
+
+  console.log("new completed", completedCount);
+
+  if (completedCount === 5) {
+    Stage.getInstance.next();
+  }
+}
+
 function onDOMLoaded() {
   Stage.getInstance.setupInitialStage();
 
@@ -198,7 +210,7 @@ function delayedDrop(selectedElement: HTMLElement) {
   if (selectedElement !== null && drag.draggedElement !== null) {
     if (selectedElement.getAttribute("data-draggable") === "false") {
       clearInterval(mouseDragStart);
-      console.log(selectedElement);
+
       drag.stopDrag(selectedElement as HTMLImageElement);
     }
     // let elementChildren: HTMLElement[] = Array.from(
