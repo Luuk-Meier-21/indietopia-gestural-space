@@ -1,6 +1,8 @@
 // export class DragClient {
 //   private static instance: DragClient;
 
+import { addCompletedPlanet, completedCount } from "../main";
+
 //   private selectedElement: HTMLElement | null = null;
 
 //   private constructor() {}
@@ -59,12 +61,12 @@ export class DragDrop {
 
   stopDrag(selectedElement: HTMLImageElement) {
     if (selectedElement) {
+      addCompletedPlanet();
       selectedElement.style.opacity = "1";
       selectedElement.setAttribute("data-draggable", "true");
 
       // Saves the original src, to revert to after moving the planet again
       selectedElement.setAttribute("data-originalsrc", selectedElement.src);
-
       selectedElement.src = this.draggedElement
         .querySelector("*")
         .getAttribute("src");
